@@ -1,0 +1,11 @@
+k8s_required_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+
+kubernetes_components:
+  - kubelet
+  - kubeadm
+  - kubectl

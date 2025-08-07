@@ -1,0 +1,6 @@
+---
+- name: master node setup
+  hosts: master
+  roles:
+    - ../roles/master_setup
+  

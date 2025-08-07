@@ -1,0 +1,13 @@
+- name: Copy join script to worker node
+  become: yes
+  ansible.builtin.copy:
+    src: /tmp/kubeadm_join_cmd.sh
+    dest: /tmp/kubeadm_join_cmd.sh
+    mode: '0755'
+
+- name: Execute the kubeadm join script on worker node
+  become: yes
+  ansible.builtin.shell: /tmp/kubeadm_join_cmd.sh
+  args:
+    executable: /bin/bash
+

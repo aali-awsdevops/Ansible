@@ -1,0 +1,12 @@
+---
+- name: Apply sysctl settings
+  become: yes
+  command: sysctl --system
+
+- name: Restart Docker
+  become: yes
+  systemd:
+    name: docker
+    state: restarted
+    enabled: yes
+

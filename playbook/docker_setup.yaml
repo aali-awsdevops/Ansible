@@ -1,0 +1,6 @@
+---
+- name: docker installation
+  hosts: kubeadm
+  roles:
+    - ../roles/install_docker
+  

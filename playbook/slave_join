@@ -1,0 +1,10 @@
+---
+- name: Slave Node Join
+  hosts: slave
+
+  vars_files:
+    - ../variables/kubeadm.yaml
+
+  roles:
+    - ../roles/slave_join
+

@@ -1,0 +1,10 @@
+---
+- name: Network setup
+  hosts: master
+
+  vars_files:
+    - ../variables/kubeadm.yaml
+
+  roles:
+    - ../roles/calico_network
+

@@ -1,0 +1,10 @@
+---
+- name: KUBEADM Installation
+  hosts: kubeadm
+
+  vars_files:
+    - ../variables/kubeadm.yaml
+
+  roles:
+    - ../roles/install_kubeadm
+

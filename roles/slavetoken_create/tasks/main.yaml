@@ -1,0 +1,21 @@
+- name: Remove old join script if it exists
+  become: yes
+  ansible.builtin.file:
+    path: /tmp/kubeadm_join_cmd.sh
+    state: absent
+
+- name: Get kubeadm join command
+  become: yes
+  shell: kubeadm token create --print-join-command
+  register: join_command
+  changed_when: false
+
+- name: Create fresh join script
+  become: yes
+  ansible.builtin.copy:
+    content: |
+      #!/bin/bash
+      {{ join_command.stdout }} --cri-socket unix:///run/cri-dockerd.sock
+    dest: /tmp/kubeadm_join_cmd.sh
+    mode: '0755'
+

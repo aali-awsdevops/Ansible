@@ -1,0 +1,4 @@
+- name: Deploy Calico network plugin
+  ansible.builtin.shell: |
+    kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+

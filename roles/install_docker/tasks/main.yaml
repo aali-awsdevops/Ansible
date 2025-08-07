@@ -1,0 +1,76 @@
+- name: Update the APT cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  become: yes
+
+- name: Install dependencies
+  apt:
+    name: 
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    state: present
+  become: yes
+
+- name: Check if Docker is already installed
+  become: yes
+  command: docker --version
+  register: docker_version
+  ignore_errors: yes
+
+- name: Install Docker using Docker's official convenience script
+  shell: curl -fsSL https://get.docker.com | sh
+  become: yes
+  when: docker_version.rc != 0
+
+
+- name: Update APT cache after adding Docker repo
+  become: yes
+  apt:
+    update_cache: yes
+  when: docker_version.rc != 0
+
+- name: Install docker dependencies
+  apt:
+    name: 
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+  become: yes
+
+- name: Enable and start Docker
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+  become: yes
+
+- name: Download cri-dockerd deb package using shell and wget
+  shell: wget -O /tmp/cri-dockerd_0.3.4.3-0.ubuntu-jammy_amd64.deb https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.4/cri-dockerd_0.3.4.3-0.ubuntu-jammy_amd64.deb
+  args:
+    creates: /tmp/cri-dockerd_0.3.4.3-0.ubuntu-jammy_amd64.deb
+
+- name: Install cri-dockerd deb package
+  become: yes
+  ansible.builtin.shell: dpkg -i /tmp/cri-dockerd_0.3.4.3-0.ubuntu-jammy_amd64.deb
+
+
+- name: Enable and start cri-docker.service
+  become: yes
+  ansible.builtin.systemd:
+    name: cri-docker.service
+    enabled: yes
+    state: started
+
+- name: Enable and start cri-docker.socket
+  become: yes
+  ansible.builtin.systemd:
+    name: cri-docker.socket
+    enabled: yes
+    state: started
+
+
+
