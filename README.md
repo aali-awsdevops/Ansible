@@ -3,6 +3,8 @@ Kubernetes setup with kubeadm
 
 
 🧾 What is an Ansible Playbook with Roles?
+
+
 A playbook describes what tasks to run and on which hosts, while a role groups those tasks and files into a standardized folder structure.
 
 ✅ Benefits of Using Roles
